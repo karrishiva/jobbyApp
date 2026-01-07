@@ -5,8 +5,11 @@ import { JSX } from "react/jsx-runtime";
 import { useState } from "react";
 import { LoginDetails } from "@/app/types/userDetails";
 import axios from "axios";
+import { useRouter } from "next/navigation";
 
 export default function Login(): JSX.Element {
+  const router = useRouter();
+
   const [loginDetails, setLoginDetails] = useState<LoginDetails>({
     username: "",
     password: "",
@@ -23,9 +26,20 @@ export default function Login(): JSX.Element {
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    const res = await axios.post("/api/login", loginDetails);
+    try {
+      const res = await axios.post("/api/login", loginDetails);
+      const { success } = res.data;
 
-    console.log("Response from server:", res.data);
+      if (!success) {
+        alert("Invalid credentials. Please try again.");
+        return;
+      }
+
+      router.push("/");
+    } catch (error) {
+      console.error("Login failed", error);
+      alert("Something went wrong. Please try again.");
+    }
   };
 
   return (
@@ -54,7 +68,7 @@ export default function Login(): JSX.Element {
                 <input
                   id="username"
                   name="username"
-                  type="username"
+                  type="text"
                   onChange={handleChange}
                   value={loginDetails.username}
                   className="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"
