@@ -24,16 +24,14 @@ export default function Navbar() {
         onClick={() => router.push("/")}
       >
         <Image
-          width={40}
-          height={40}
+          width={80}
+          height={80}
           src="https://assets.ccbp.in/frontend/react-js/logo-img.png"
           alt="Logo"
-          className="w-10 h-10 object-contain"
+          className="object-contain"
         />
-        <span className="font-bold text-lg">JobbyApp</span>
       </div>
 
-      {/* Navigation Links */}
       <ul className="flex items-center gap-6">
         <li>
           <Link href="/" className="hover:text-indigo-400">
